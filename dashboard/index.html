@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — which pre-token protocol is worth farming next</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="pulse" aria-hidden="true"></div>
+    <div>
+      <h1>TOKEN RADAR</h1>
+      <p class="tag">Every protocol that records no token, ranked by what its launch would be worth — and how to farm it.</p>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<main>
+  <section class="method" aria-label="How the ranking works">
+    <h2>How the value is worked out</h2>
+    <p class="formula">implied value = TVL &times; category multiple &times; growth &times; age &times; breadth</p>
+    <ul>
+      <li><b>Category multiple</b> — the median market-cap / TVL of the protocols in the same category whose token already trades (3+ peers; otherwise the all-category median), clamped 0.05–1.50. What the market already pays for live TVL is the anchor for a launch.</li>
+      <li><b>Growth</b> — 1 + 7-day TVL change clamped to &minus;30%…+60%, divided by 200.</li>
+      <li><b>Age</b> — 1 + 0.15 &times; years since first listed, capped at 4 years. Longer with no token recorded, more pent-up launch value.</li>
+      <li><b>Breadth</b> — 1 + 0.02 &times; chains, capped at 10 chains.</li>
+    </ul>
+    <p class="note">Nothing here is a prediction that a token will be issued, or when. A protocol on this board <em>records no token</em> in the snapshot — that is not proof it has none. Implied values are this radar's own claim, computed from the snapshot's figures alone; no protocol is ranked by name.</p>
+  </section>
+
+  <section class="controls" aria-label="Filter the board">
+    <label>Search <input id="q" type="search" placeholder="protocol or chain…" autocomplete="off"></label>
+    <label>Category
+      <select id="cat"><option value="">All categories</option></select>
+    </label>
+    <label>Sort by
+      <select id="sort">
+        <option value="value">Implied value ↓</option>
+        <option value="tvl">TVL ↓</option>
+        <option value="growth">7-day growth ↓</option>
+        <option value="age">Age without token ↓</option>
+      </select>
+    </label>
+    <span class="count" id="count"></span>
+  </section>
+
+  <section class="boardwrap">
+    <table id="board">
+      <thead><tr>
+        <th data-k="rank">#</th>
+        <th data-k="name">Protocol</th>
+        <th data-k="category">Category</th>
+        <th data-k="chains">Chains</th>
+        <th data-k="tvl" class="num">TVL</th>
+        <th data-k="growth" class="num">7d</th>
+        <th data-k="age" class="num">Age</th>
+        <th data-k="value" class="num">Implied value</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No protocol matches that filter.</p>
+  </section>
+
+  <section class="detail" id="detail" aria-label="Protocol detail"></section>
+
+  <section class="setaside" id="setaside" aria-label="What the board leaves out"></section>
+</main>
+
+<footer>
+  <p>Data: DefiLlama protocol snapshot, fetched <span id="asof"></span>. Board of <span id="nrows"></span> rows: the whole 40-protocol watchlist (TVL ≥ $50M, no token recorded) plus the best early pre-token protocols below the floor. Wrapped, staked and bridged products of tokens that already trade are set aside, never ranked. Built by a program that reads only the snapshot — no network, no prices beyond it.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
